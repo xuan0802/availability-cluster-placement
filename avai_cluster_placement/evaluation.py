@@ -24,9 +24,7 @@ def evaluate(result, request, topology):
     for vir_link in vir_links:
         if vir_link in routing.keys():
             total_bw += len(routing[vir_link])*RB[vir_link]
-        else:
-            print(vir_link)
-            print(routing.keys())
+
     # calculate availability
     request_avai = {}
     Av_soft = 0.9

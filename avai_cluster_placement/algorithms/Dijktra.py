@@ -1,5 +1,5 @@
 from collections import deque, namedtuple
-
+from copy import deepcopy
 
 # we'll use infinity as a default distance to nodes.
 inf = float('inf')
@@ -52,6 +52,16 @@ class Graph:
         self.edges.append(Edge(start=n1, end=n2, cost=cost))
         if both_ends:
             self.edges.append(Edge(start=n2, end=n1, cost=cost))
+
+    def update_edge(self, n1, n2, cost, both_ends=True):
+        node_pairs = self.get_node_pairs(n1, n2, both_ends)
+        edges_ = deepcopy(self.edges)
+        for edge in edges_:
+            if [edge.start, edge.end] in node_pairs:
+                self.edges.remove(edge)
+                self.edges.append(Edge(start=n2, end=n1, cost=cost))
+                break
+
 
     @property
     def neighbours(self):

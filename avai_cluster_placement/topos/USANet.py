@@ -22,7 +22,8 @@ def initialize_topo():
         EG.append(tuple('dc' + str(x) for x in v))
 
     # init computing capacity
-    center_capacity_list = [1000, 1500, 2500, 5000]
+    # center_capacity_list = [1000, 1500, 2500, 5000]
+    center_capacity_list = [1000]
     for n in DC:
         CA[n] = choice(center_capacity_list)
 
@@ -48,5 +49,3 @@ def initialize_topo():
     input_topo['AvL'] = AvL
 
     return input_topo
-
-

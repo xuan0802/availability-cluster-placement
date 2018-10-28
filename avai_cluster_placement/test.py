@@ -79,15 +79,19 @@
 # edges = [('a', 'b'), ('a', 'c'), ('a', 'd'), ('b', 'c'), ('c', 'd'), ('c', 'e'), ('d', 'e'), ('b', 'f'),
 #          ('c', 'g'), ('e', 't'), ('g', 't'), ('k', 't')]
 # t = ShortestTree(vertices, edges, 'a', AvN)
-# root = t.build_shortest_tree()
+# root = t.build_shortest_tree()from collections import deque, namedtuple
 # print(t.max_height)
 # d = [1, 2, 3]
 #
-# print(d.pop(1))
-d = [1, 2]
-d1 = [1, 2]
-d2 = d + d1
-d2.remove()
-print(d)
-print(d1)
-print(d2)
+# # print(d.pop(1))
+# dc = ['dc11', 'dc3', 'dc5', 'dc9', 'dc10', 'dc12', 'dc13', 'dc14', 'dc22', 'dc2', 'dc4', 'dc15', 'dc18', 'dc19', 'dc20', 'dc21', 'dc23', 'dc24', 'dc1', 'dc8']
+# ed = [('dc1', 'dc2'), ('dc2', 'dc3'), ('dc3', 'dc5'), ('dc3', 'dc4'), ('dc4', 'dc5'), ('dc5', 'dc8'), ('dc9', 'dc10'), ('dc9', 'dc11'), ('dc11', 'dc19'), ('dc11', 'dc15'), ('dc15', 'dc20'), ('dc19', 'dc22'), ('dc11', 'dc12'), ('dc20', 'dc21'), ('dc9', 'dc12'), ('dc10', 'dc13'), ('dc12', 'dc13'), ('dc21', 'dc22'), ('dc22', 'dc23'), ('dc10', 'dc14'), ('dc13', 'dc14'), ('dc14', 'dc18'), ('dc18', 'dc24'), ('dc23', 'dc24')]
+# visited = {'dc14', 'dc22', 'dc12', 'dc9', 'dc21', 'dc10', 'dc18', 'dc19', 'dc23', 'dc24', 'dc20', 'dc11', 'dc13', 'dc15'}
+# all_vertices = ['dc3', 'dc5', 'dc2', 'dc4', 'dc1', 'dc8']
+# for e in ed:
+#     if (e[0] in all_vertices and e [1]) in visited or (e[1] in all_vertices and e [0] in visited):
+#         print(e)
+from collections import deque, namedtuple
+Edge = namedtuple('Edge', 'start, end, cost')
+e = Edge('a', 'b', 1)
+e.cost = 10

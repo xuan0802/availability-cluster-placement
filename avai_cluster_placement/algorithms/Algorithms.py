@@ -1,3 +1,6 @@
+from copy import copy, deepcopy
+
+
 class Algorithm:
     def __init__(self, topo, req):
         self.topo = topo
@@ -60,7 +63,8 @@ class Algorithm:
 
     # remove associated links of a node
     def remove_links(self, n, edges):
-        for e in edges:
+        edges_temp = deepcopy(edges)
+        for e in edges_temp:
             if n in e:
                 edges.remove(e)
 
@@ -87,6 +91,30 @@ class Algorithm:
                                 if a != a_:
                                     if (a_, a) not in virtual_links:
                                         virtual_links.append((a, a_))
+        return virtual_links
+
+    # obtain all virtual links
+    def get_virtual_links_one_req(self, req):
+        ACT = self.req['ACT']
+        STB = self.req['STB']
+        virtual_links = []
+
+        if req[0:4] == 'reqA':
+            for a in ACT[req]:
+                for s in STB[req]:
+                    virtual_links.append((a, s))
+        else:
+            if req[0:4] == 'reqB':
+                for a in ACT[req]:
+                    for s in STB[req]:
+                        virtual_links.append((s, a))
+            else:
+                if req[0:4] == 'reqC':
+                    for a in ACT[req]:
+                        for a_ in ACT[req]:
+                            if a != a_:
+                                if (a_, a) not in virtual_links:
+                                    virtual_links.append((a, a_))
         return virtual_links
 
     # print placement results

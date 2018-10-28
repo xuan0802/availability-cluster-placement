@@ -18,8 +18,8 @@ class Node:
 
 class ShortestTree:
     def __init__(self, vertices, edges, starting_vertex, AvN):
-        self.vertices = vertices
-        self.edges = edges
+        self.vertices = deepcopy(vertices)
+        self.edges = deepcopy(edges)
         self.start_vertex = starting_vertex
         self.AvN = AvN
         self.max_height = None
@@ -59,7 +59,6 @@ class ShortestTree:
             for vertex in visited_vertices:
                 if vertex in all_vertices:
                     all_vertices.remove(vertex)
-
         return root
 
     # get all branches which have the length of k

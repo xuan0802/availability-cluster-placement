@@ -2,10 +2,10 @@ from .Algorithms import Algorithm
 from copy import deepcopy
 import itertools
 from .Dijktra import Graph
-import random
+from random import choice
 
 
-class AvailGreedy(Algorithm):
+class Bandwidth_Greedy(Algorithm):
     def run(self):
         CA = self.topo['CA']
         DC = self.topo['DC']
@@ -28,13 +28,20 @@ class AvailGreedy(Algorithm):
             req_num[r] = len(ACT[r]) + len(STB[r])
         CR.sort(key=lambda x: req_num[x], reverse=True)
 
-        # for each request, try to place each virtual node on node with highest availability and enough resources first
+        # for each request, try to place each virtual node on node having highest bandwidth on all links
         for r in CR:
             vir_nodes = ACT[r] + STB[r]
-            # sort nodes according availability
-            DC.sort(key=lambda x: AvN[x], reverse=True)
             # place virtual node on physical node
             visited_nodes = list()
+            # sort nodes according total bandwidth on all associated links
+            bw_total = {}
+            for d in DC:
+                bw_temp = 0
+                for e in EG:
+                    if d in e:
+                        bw_temp += BW[e]
+                bw_total[d] = bw_temp
+            DC.sort(key=lambda x: bw_total[x], reverse=True)
             while vir_nodes:
                 placeable = False
                 # get one virtual node

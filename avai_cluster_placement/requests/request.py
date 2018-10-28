@@ -1,7 +1,7 @@
 from random import *
 
-num_act_list = [2, 3, 6, 8]
-num_stb_list = [2, 3, 6, 8]
+num_act_list = [2, 3, 4]
+num_stb_list = [2, 3, 4]
 demand_com_list = [10]
 demand_bw_list = [10]
 

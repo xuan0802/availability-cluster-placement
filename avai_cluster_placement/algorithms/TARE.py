@@ -2,7 +2,7 @@ from .Algorithms import Algorithm
 from copy import deepcopy
 import itertools
 from .ShortestTree import ShortestTree
-
+from .Dijktra import Graph
 
 class TARE(Algorithm):
     def run(self):
@@ -49,23 +49,29 @@ class TARE(Algorithm):
                     if r[0:4] == 'reqB':
                         center_vir_node = STB[r][0]
                         edge_vir_nodes = ACT[r]
-
                 # remove nodes and links which do not satisfy computing and bandwidth resource requirements
-                for e in EG_:
+                # create lists to iterate while removing elements inside
+                EG_rep = deepcopy(EG_)
+                DC_rep = deepcopy(DC_)
+
+                for e in EG_rep:
                     if BW[e] < RB[center_vir_node, edge_vir_nodes[0]]:
                         EG_.remove(e)
-                neighbors = self.get_neighbors(EG_, DC_)
-                for d in DC_:
-                    # remove nodes which do not have usable links
-                    if not neighbors[d]:
-                        DC_.remove(d)
+                for d in DC_rep:
                     # remove nodes and associated links which do not have enough resources
                     if CA[d] < RC[edge_vir_nodes[0]]:
                         DC_.remove(d)
                         self.remove_links(d, EG_)
+                neighbors = self.get_neighbors(EG_, DC_)
+                DC_rep = deepcopy(DC_)
+                for d in DC_rep:
+                    # remove nodes which do not have usable links
+                    if not neighbors[d]:
+                        DC_.remove(d)
 
                 # calculate the rank, rank = number of usable links
                 neighbors = self.get_neighbors(EG_, DC_)
+
                 phy_node_rank = {}
                 for d in DC_:
                     phy_node_rank[d] = len(neighbors[d])
@@ -74,17 +80,24 @@ class TARE(Algorithm):
                 DC_.sort(key=lambda x: phy_node_rank[x], reverse=True)
                 # map request to physical node with highest rank first
                 for d in DC_:
+                    # place_nodes used to check node already placed
+                    placed_nodes = list()
+                    # req_place_result, req_routing_result used to store temporarily placement for one results
+                    req_place_result = dict()
+                    req_routing_result = dict()
+                    edge_vir_nodes_ = deepcopy(edge_vir_nodes)
+                    # variables to store temporarily resources
+                    CA_ = deepcopy(CA)
+                    BW_ = deepcopy(BW)
                     # if physical node has enough resources to host center virtual node
-                    if CA[d] >= RC[center_vir_node]:
-                        # do placement for center node
-                        self.X[center_vir_node] = d
-                        CA[d] -= RC[center_vir_node]
+                    if CA_[d] >= RC[center_vir_node]:
                         # make a shortest tree with availability
-                        shortestTree = ShortestTree(DC_, EG_, d, AvN)
+                        shortestTree = ShortestTree(DC, EG, d, AvN)
                         tree_root = shortestTree.build_shortest_tree()
                         # place virtual nodes in turn on physical nodes of shortest tree
-                        # place_nodes used to check node already placed
-                        placed_nodes = list()
+                        # temporarily store results
+                        req_place_result[center_vir_node] = d
+                        CA_[d] -= RC[center_vir_node]
                         placed_nodes.append(d)
                         k = 1
                         # place until the end of tree
@@ -95,9 +108,9 @@ class TARE(Algorithm):
                             tree_nodes.sort(key=lambda x: AvN[x.name], reverse=True)
                             # start placement
                             for tree_node in tree_nodes:
-                                if edge_vir_nodes:
+                                if edge_vir_nodes_:
                                     if tree_node.name not in placed_nodes:
-                                        edge_vir_node = edge_vir_nodes.pop(0)
+                                        edge_vir_node = edge_vir_nodes_[0]
                                         vir_link = (center_vir_node, edge_vir_node)
                                         reverse_path = list()
                                         shortestTree.traverse_back(tree_node, reverse_path)
@@ -106,35 +119,49 @@ class TARE(Algorithm):
                                                                                            RB[vir_link]
                                                                                            for e in
                                                                                            reverse_path_edges):
-                                            self.X[edge_vir_node] = tree_node.name
+                                            # if resources satisfy, do temporary placement, decrease resources
+                                            req_place_result[edge_vir_node] = tree_node.name
                                             placed_nodes.append(tree_node.name)
-                                            CA[tree_node.name] -= RC[edge_vir_node]
-                                            self.U[vir_link] = list()
+                                            CA_[tree_node.name] -= RC[edge_vir_node]
+                                            req_routing_result[vir_link] = list()
                                             for e in reverse_path_edges:
-                                                BW[e] -= RB[vir_link]
-                                                self.U[vir_link].append(e)
+                                                BW_[e] -= RB[vir_link]
+                                                req_routing_result[vir_link].append(e)
+                                            # remove edge node from place list
+                                            edge_vir_nodes_.pop(0)
                                         else:
                                             continue
                                     else:
                                         continue
                                 else:
+                                    req_placed = True
                                     break
 
                             # if not placed all edge virtual nodes
-                            if edge_vir_nodes:
+                            if not req_placed:
                                 k += 1
-                                req_placed = True
                             # if all edge virtual nodes placed
                             else:
-                                req_placed = True
                                 break
+                        if req_placed:
+                            break
+                        else:
+                            continue
 
-                    if req_placed:
-                        break
-                    else:
-                        print(r)
-                        print(edge_vir_nodes)
-                        print("can not place")
+                if req_placed:
+                    # do real placement, decrease real resources
+                    for vir_node in req_place_result.keys():
+                        self.X[vir_node] = req_place_result[vir_node]
+                        CA[req_place_result[vir_node]] -= RC[vir_node]
+                    for vir_link in req_routing_result.keys():
+                        self.U[vir_link] = deepcopy(req_routing_result[vir_link])
+                        for e in req_routing_result[vir_link]:
+                            BW[e] -= RB[vir_link]
+                else:
+                    # do random placement for unplaced requests
+                    self.random_placement(r, RC, RB)
+                    print(r)
+                    print("can not place this request")
 
             else:
                 if topo_type == 'mesh':
@@ -166,3 +193,65 @@ class TARE(Algorithm):
                     else:
                         print("can not place")
 
+    def random_placement(self, req, RC, RB):
+        CA = self.topo['CA']
+        DC = self.topo['DC']
+        EG = self.topo['EG']
+        BW = self.topo['BW']
+        AvN = self.topo['AvN']
+
+        ACT = self.req['ACT']
+        STB = self.req['STB']
+
+        # =========================== random node placement algorithm ================================
+        vir_nodes = ACT[req] + STB[req]
+        vir_links = self.get_virtual_links_one_req(req)
+
+        while vir_nodes:
+            req_placed = False
+            # get one virtual node
+            vir_node = vir_nodes[0]
+            # check computing resources enough or not
+            for d in DC:
+                if CA[d] >= RC[vir_node]:
+                    self.X[vir_node] = d
+                    # decrease resources
+                    CA[d] -= RC[vir_node]
+                    req_placed = True
+                    break
+            if not req_placed:
+                print("can not place")
+
+        # =========================== shortest path link mapping algorithm ================================
+
+        # map virtual link to physical link
+        for vir_link in vir_links:
+            # get the physical nodes
+            phy_node_0 = self.X[vir_link[0]]
+            phy_node_1 = self.X[vir_link[1]]
+            if phy_node_0 == phy_node_1:
+                self.U[vir_link] = []
+                continue
+
+            # remove all physical links not enough bandwidth
+            graph = Graph(EG)
+            out_of_bw_phy_links = []
+            for phy_link in EG:
+                if BW[phy_link] <= RB[vir_link[0], vir_link[1]]:
+                    graph.update_edge(phy_link[0], phy_link[1], cost=100)
+                    out_of_bw_phy_links.append(phy_link)
+
+            # run shortest path algorithm to find best path
+            path = graph.dijkstra(phy_node_0, phy_node_1)
+
+            # update results and decrease bandwidth resources
+            self.U[vir_link] = []
+            # get path in terms of edges, not vertices
+            edge_path = self.get_path_edges(path)
+            # if path consists of physical links out of bandwidth, then unable to map
+            for e in edge_path:
+                if e in out_of_bw_phy_links:
+                    print("can not map link")
+            for e in edge_path:
+                self.U[vir_link].append(e)
+                BW[e] -= RB[vir_link]
