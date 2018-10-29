@@ -63,43 +63,7 @@ class Bandwidth_Greedy(Algorithm):
         # obtain all virtual links
         virtual_links = self.get_virtual_links()
         # map virtual link to physical link
-        for vir_link in virtual_links:
-            link_mappable = True
-            # get the physical nodes
-            phy_node_0 = self.X[vir_link[0]]
-            phy_node_1 = self.X[vir_link[1]]
-            if phy_node_0 == phy_node_1:
-                self.U[vir_link] = []
-                continue
-
-            # remove all physical links not enough bandwidth
-            graph = Graph(EG)
-            out_of_bw_phy_links = []
-            for phy_link in EG:
-                if BW[phy_link] <= RB[vir_link[0], vir_link[1]]:
-                    graph.update_edge(phy_link[0], phy_link[1], cost=100)
-                    out_of_bw_phy_links.append(phy_link)
-
-            # run shortest path algorithm to find best path
-            path = graph.dijkstra(phy_node_0, phy_node_1)
-
-            # update results and decrease bandwidth resources
-            self.U[vir_link] = []
-            # get path in terms of edges, not vertices
-            edge_path = self.get_path_edges(path)
-            # if path consists of physical links out of bandwidth, then unable to map
-            for e in edge_path:
-                if e in out_of_bw_phy_links:
-                    link_mappable = False
-                    print(out_of_bw_phy_links)
-
-            if link_mappable:
-                # update routing results, and decrease resources
-                for e in edge_path:
-                    self.U[vir_link].append(e)
-                    BW[e] -= RB[vir_link]
-            else:
-                print("can not map link")
+        self.shortest_path_link_map(virtual_links, RB)
 
 
 

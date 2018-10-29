@@ -7,7 +7,7 @@ from avai_cluster_placement.evaluation import evaluate
 from copy import deepcopy
 
 if __name__ == "__main__":
-    req = request_generator(0, 10, 0)
+    req = request_generator(0, 5, 5)
     topo = initialize_topo()
     req1 = deepcopy(req)
     req2 = deepcopy(req)

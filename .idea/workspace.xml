@@ -2,19 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6752e842-a364-4a20-ba70-01a95ad8095b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/avai_cluster_placement/algorithms/bandwidth_greedy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/avai_cluster_placement/algorithms/Algorithms.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/algorithms/Algorithms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avai_cluster_placement/algorithms/Dijktra.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/algorithms/Dijktra.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avai_cluster_placement/algorithms/ShortestTree.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/algorithms/ShortestTree.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/avai_cluster_placement/algorithms/TARE.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/algorithms/TARE.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/avai_cluster_placement/algorithms/avai_greedy.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/algorithms/avai_greedy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avai_cluster_placement/evaluation.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/evaluation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/avai_cluster_placement/algorithms/bandwidth_greedy.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/algorithms/bandwidth_greedy.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/avai_cluster_placement/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avai_cluster_placement/requests/request.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/requests/request.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avai_cluster_placement/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avai_cluster_placement/topos/USANet.py" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/topos/USANet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/avai_cluster_placement/topos/USAnet.csv" beforeDir="false" afterPath="$PROJECT_DIR$/avai_cluster_placement/topos/USAnet.csv" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,7 +24,7 @@
     <SUITE FILE_PATH="coverage/availability_cluster_placement$main.coverage" NAME="main Coverage Results" MODIFIED="1534488682879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/availability-cluster-placement" />
     <SUITE FILE_PATH="coverage/availability_cluster_placement$request.coverage" NAME="request Coverage Results" MODIFIED="1534927176662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/availability-cluster-placement/requests" />
     <SUITE FILE_PATH="coverage/availability_cluster_placement$Dijktra.coverage" NAME="Dijktra Coverage Results" MODIFIED="1538929863183" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/avai_cluster_placement/algorithms" />
-    <SUITE FILE_PATH="coverage/availability_cluster_placement$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1540750039187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/avai_cluster_placement" />
+    <SUITE FILE_PATH="coverage/availability_cluster_placement$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1540838014440" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/avai_cluster_placement" />
   </component>
   <component name="FavoritesManager">
     <favorites_list name="availability-cluster-placement" />
@@ -41,19 +34,10 @@
       <file leaf-file-name="Algorithms.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/Algorithms.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="102" column="30" lean-forward="true" selection-start-line="102" selection-start-column="30" selection-end-line="102" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="avai_greedy.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/avai_greedy.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="682">
-              <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
+            <state relative-caret-position="47">
+              <caret line="73" column="27" selection-start-line="73" selection-start-column="27" selection-end-line="73" selection-end-column="27" />
               <folding>
-                <element signature="e#0#33#0" expanded="true" />
+                <element signature="e#0#31#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -62,8 +46,8 @@
       <file leaf-file-name="bandwidth_greedy.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/bandwidth_greedy.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-704">
-              <caret line="40" column="30" lean-forward="true" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
+            <state relative-caret-position="919">
+              <caret line="71" lean-forward="true" selection-start-line="71" selection-end-line="71" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
@@ -74,17 +58,17 @@
       <file leaf-file-name="evaluation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/avai_cluster_placement/evaluation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="792">
-              <caret line="36" selection-start-line="36" selection-end-line="36" />
+            <state relative-caret-position="462">
+              <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/avai_cluster_placement/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="638">
-              <caret line="29" column="24" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
+            <state relative-caret-position="198">
+              <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
               <folding>
                 <element signature="e#0#69#0" expanded="true" />
               </folding>
@@ -101,11 +85,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TARE.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TARE.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/TARE.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="449">
-              <caret line="175" column="49" lean-forward="true" selection-start-line="175" selection-start-column="49" selection-end-line="175" selection-end-column="49" />
+            <state relative-caret-position="487">
+              <caret line="194" column="59" selection-start-line="194" selection-start-column="59" selection-end-line="194" selection-end-column="59" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
@@ -116,8 +100,8 @@
       <file leaf-file-name="USAnet.csv" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/avai_cluster_placement/topos/USAnet.csv">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-11">
-              <caret line="4" column="3" lean-forward="true" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+            <state relative-caret-position="88">
+              <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
             </state>
           </provider>
         </entry>
@@ -125,7 +109,7 @@
       <file leaf-file-name="USANet.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/avai_cluster_placement/topos/USANet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
+            <state relative-caret-position="638">
               <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
@@ -170,20 +154,20 @@
         <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/Resouce-greedy.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/Tree.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/RMAR.py" />
-        <option value="$PROJECT_DIR$/avai_cluster_placement/evaluation.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/topos/USAnet.csv" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/ShortestTree.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/test.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/Dijktra.py" />
-        <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/Algorithms.py" />
-        <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/TARE.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/topos/USANet.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/random.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/requests/request.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/resource_greedy.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/avai_greedy.py" />
-        <option value="$PROJECT_DIR$/avai_cluster_placement/main.py" />
         <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/bandwidth_greedy.py" />
+        <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/TARE.py" />
+        <option value="$PROJECT_DIR$/avai_cluster_placement/algorithms/Algorithms.py" />
+        <option value="$PROJECT_DIR$/avai_cluster_placement/evaluation.py" />
+        <option value="$PROJECT_DIR$/avai_cluster_placement/main.py" />
       </list>
     </option>
   </component>
@@ -412,15 +396,14 @@
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3293348" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32897604" />
-      <window_info anchor="bottom" x="-43" y="279" width="1902" height="705" id="Run" order="2" type="FLOATING" weight="0.24400872" />
+      <window_info anchor="bottom" x="57" y="271" width="1762" height="569" id="Run" order="2" type="FLOATING" weight="0.24400872" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32897604" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7099237" visible="true" weight="0.13844515" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.70883316" visible="true" weight="0.13951011" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" sideWeight="0.27995643" side_tool="true" weight="0.12832801" />
-      <window_info id="Favorites" order="2" sideWeight="0.29007635" side_tool="true" visible="true" weight="0.13844515" />
+      <window_info id="Favorites" order="2" sideWeight="0.29116684" side_tool="true" visible="true" weight="0.13951011" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.24645583" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -428,30 +411,31 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" weight="0.3293348" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16986156" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" x="23" y="394" width="1878" height="620" id="Run" order="2" type="FLOATING" weight="0.24400872" />
-      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32897604" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32897604" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.32897604" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39978212" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32897604" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -465,7 +449,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="36" />
+      <option name="time" value="37" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -721,23 +705,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/Algorithms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="102" column="30" lean-forward="true" selection-start-line="102" selection-start-column="30" selection-end-line="102" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/avai_greedy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/Dijktra.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1210">
@@ -748,30 +715,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/main.py">
+    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/topos/USAnet.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="3" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/topos/USANet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="638">
-          <caret line="29" column="24" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
+          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
           <folding>
-            <element signature="e#0#69#0" expanded="true" />
+            <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/bandwidth_greedy.py">
+    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/avai_greedy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-704">
-          <caret line="40" column="30" lean-forward="true" selection-start-line="40" selection-start-column="30" selection-end-line="40" selection-end-column="30" />
+        <state relative-caret-position="677">
+          <caret line="58" column="54" lean-forward="true" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="54" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/evaluation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="792">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
         </state>
       </provider>
     </entry>
@@ -782,29 +749,49 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/topos/USAnet.csv">
+    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/bandwidth_greedy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-11">
-          <caret line="4" column="3" lean-forward="true" selection-start-line="4" selection-start-column="3" selection-end-line="4" selection-end-column="3" />
+        <state relative-caret-position="919">
+          <caret line="71" lean-forward="true" selection-start-line="71" selection-end-line="71" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/topos/USANet.py">
+    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/Algorithms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="30" column="4" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="4" />
+        <state relative-caret-position="47">
+          <caret line="73" column="27" selection-start-line="73" selection-start-column="27" selection-end-line="73" selection-end-column="27" />
           <folding>
-            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/evaluation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/avai_cluster_placement/algorithms/TARE.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="449">
-          <caret line="175" column="49" lean-forward="true" selection-start-line="175" selection-start-column="49" selection-end-line="175" selection-end-column="49" />
+        <state relative-caret-position="487">
+          <caret line="194" column="59" selection-start-line="194" selection-start-column="59" selection-end-line="194" selection-end-column="59" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/avai_cluster_placement/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="9" column="36" lean-forward="true" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#69#0" expanded="true" />
           </folding>
         </state>
       </provider>

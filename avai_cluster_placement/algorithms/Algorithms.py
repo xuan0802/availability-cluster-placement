@@ -1,4 +1,5 @@
 from copy import copy, deepcopy
+from .Dijktra import Graph
 
 
 class Algorithm:
@@ -71,51 +72,36 @@ class Algorithm:
     # obtain all virtual links
     def get_virtual_links(self):
         CR = self.req['CR']
-        ACT = self.req['ACT']
-        STB = self.req['STB']
         virtual_links = []
         for r in CR:
-            if r[0:4] == 'reqA':
-                for a in ACT[r]:
-                    for s in STB[r]:
-                        virtual_links.append((a, s))
-            else:
-                if r[0:4] == 'reqB':
-                    for a in ACT[r]:
-                        for s in STB[r]:
-                            virtual_links.append((s, a))
-                else:
-                    if r[0:4] == 'reqC':
-                        for a in ACT[r]:
-                            for a_ in ACT[r]:
-                                if a != a_:
-                                    if (a_, a) not in virtual_links:
-                                        virtual_links.append((a, a_))
+            virtual_links_req = self.get_virtual_links_one_req(r)
+            for virtual_link in virtual_links_req:
+                virtual_links.append(virtual_link)
         return virtual_links
 
     # obtain all virtual links
     def get_virtual_links_one_req(self, req):
         ACT = self.req['ACT']
         STB = self.req['STB']
-        virtual_links = []
+        virtual_links_req = []
 
         if req[0:4] == 'reqA':
             for a in ACT[req]:
                 for s in STB[req]:
-                    virtual_links.append((a, s))
+                    virtual_links_req.append((a, s))
         else:
             if req[0:4] == 'reqB':
                 for a in ACT[req]:
                     for s in STB[req]:
-                        virtual_links.append((s, a))
+                        virtual_links_req.append((s, a))
             else:
                 if req[0:4] == 'reqC':
                     for a in ACT[req]:
                         for a_ in ACT[req]:
                             if a != a_:
-                                if (a_, a) not in virtual_links:
-                                    virtual_links.append((a, a_))
-        return virtual_links
+                                if (a_, a) not in virtual_links_req:
+                                    virtual_links_req.append((a, a_))
+        return virtual_links_req
 
     # print placement results
     def print_results(self):
@@ -133,5 +119,47 @@ class Algorithm:
             edge_path.append(self.get_link(vertex_path[p], vertex_path[p + 1]))
         return edge_path
 
+    # find shortest path between two nodes
+    def shortest_path_link_map(self, vir_links, RB):
+        EG = self.topo['EG']
+        BW = self.topo['BW']
 
+        # map virtual link to physical link
+        for vir_link in vir_links:
+            link_mappable = True
+            # get the physical nodes
+            phy_node_0 = self.X[vir_link[0]]
+            phy_node_1 = self.X[vir_link[1]]
+            if phy_node_0 == phy_node_1:
+                self.U[vir_link] = []
+                continue
+
+            # remove all physical links not enough bandwidth
+            graph = Graph(EG)
+            out_of_bw_phy_links = []
+            for phy_link in EG:
+                if BW[phy_link] <= RB[vir_link[0], vir_link[1]]:
+                    graph.update_edge(phy_link[0], phy_link[1], cost=100)
+                    out_of_bw_phy_links.append(phy_link)
+
+            # run shortest path algorithm to find best path
+            path = graph.dijkstra(phy_node_0, phy_node_1)
+
+            # update results and decrease bandwidth resources
+            self.U[vir_link] = []
+            # get path in terms of edges, not vertices
+            edge_path = self.get_path_edges(path)
+            # if path consists of physical links out of bandwidth, then unable to map
+            for e in edge_path:
+                if e in out_of_bw_phy_links:
+                    link_mappable = False
+                    print(out_of_bw_phy_links)
+
+            if link_mappable:
+                # update routing results, and decrease resources
+                for e in edge_path:
+                    self.U[vir_link].append(e)
+                    BW[e] -= RB[vir_link]
+            else:
+                print("can not map link")
 

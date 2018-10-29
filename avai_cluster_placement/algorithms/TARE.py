@@ -160,38 +160,50 @@ class TARE(Algorithm):
                 else:
                     # do random placement for unplaced requests
                     self.random_placement(r, RC, RB)
-                    print(r)
-                    print("can not place this request")
+
+
 
             else:
                 if topo_type == 'mesh':
                     # determine node number
                     node_num = len(ACT[r]) + len(STB[r])
+                    peer_nodes = ACT[r] + STB[r]
 
                     # create a list of possible combinations
                     combination_list = list(itertools.combinations(DC, node_num))
 
-                    peer_nodes = ACT[r] + STB[r]
-                    real_link_num = {}
+                    # remove combination not enough resources
+                    combination_list_rep = deepcopy(combination_list)
+                    for comb in combination_list_rep:
+                        if min(CA[i] for i in comb) < RC[peer_nodes[0]]:
+                            combination_list.remove(comb)
+
+                    # calculate number of usable links
+                    usable_link_num = {}
                     for comb in combination_list:
-                        comb_real_link_num = 0
-                        comb_pos_link_list = list(itertools.combinations(comb, 2))
-                        for i in comb_pos_link_list:
+                        comb_usable_link_num = 0
+                        comb_pos_links = list(itertools.combinations(comb, 2))
+                        for i in comb_pos_links:
                             if any(elem in EG for elem in list(itertools.permutations(i, 2))):
-                                comb_real_link_num = comb_real_link_num + 1
-                        real_link_num[comb] = comb_real_link_num
-                    combination_list.sort(key=lambda x: real_link_num[x], reverse=True)
-                    for comb in combination_list:
-                        if min(CA[i] for i in comb) > RC[peer_nodes[0]]:
-                            for i in range(len(comb)):
-                                self.X[peer_nodes[i]] = comb[i]
-                                CA[comb[i]] = CA[comb[i]] - RC[peer_nodes[0]]
-                            placeable = True
-                            break
-                    if placeable:
-                        continue
+                                comb_usable_link_num = comb_usable_link_num + 1
+                        usable_link_num[comb] = comb_usable_link_num
+
+                    # sort according to usable link number
+                    combination_list.sort(key=lambda x: usable_link_num[x], reverse=True)
+                    if combination_list:
+                        selected_comb = combination_list[0]
+                        for i in range(len(selected_comb)):
+                            self.X[peer_nodes[i]] = selected_comb[i]
+                            CA[selected_comb[i]] = CA[selected_comb[i]] - RC[peer_nodes[0]]
+                        req_placed = True
+
+                    if req_placed:
+                        # get virtual links
+                        vir_links = self.get_virtual_links_one_req(r)
+                        # do link mapping
+                        self.shortest_path_link_map(vir_links, RB)
                     else:
-                        print("can not place")
+                        self.random_placement(r, RC, RB)
 
     def random_placement(self, req, RC, RB):
         CA = self.topo['CA']
@@ -223,35 +235,4 @@ class TARE(Algorithm):
                 print("can not place")
 
         # =========================== shortest path link mapping algorithm ================================
-
-        # map virtual link to physical link
-        for vir_link in vir_links:
-            # get the physical nodes
-            phy_node_0 = self.X[vir_link[0]]
-            phy_node_1 = self.X[vir_link[1]]
-            if phy_node_0 == phy_node_1:
-                self.U[vir_link] = []
-                continue
-
-            # remove all physical links not enough bandwidth
-            graph = Graph(EG)
-            out_of_bw_phy_links = []
-            for phy_link in EG:
-                if BW[phy_link] <= RB[vir_link[0], vir_link[1]]:
-                    graph.update_edge(phy_link[0], phy_link[1], cost=100)
-                    out_of_bw_phy_links.append(phy_link)
-
-            # run shortest path algorithm to find best path
-            path = graph.dijkstra(phy_node_0, phy_node_1)
-
-            # update results and decrease bandwidth resources
-            self.U[vir_link] = []
-            # get path in terms of edges, not vertices
-            edge_path = self.get_path_edges(path)
-            # if path consists of physical links out of bandwidth, then unable to map
-            for e in edge_path:
-                if e in out_of_bw_phy_links:
-                    print("can not map link")
-            for e in edge_path:
-                self.U[vir_link].append(e)
-                BW[e] -= RB[vir_link]
+        self.shortest_path_link_map(vir_links, RB)
