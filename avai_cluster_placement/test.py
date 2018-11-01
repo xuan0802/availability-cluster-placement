@@ -91,7 +91,13 @@
 # for e in ed:
 #     if (e[0] in all_vertices and e [1]) in visited or (e[1] in all_vertices and e [0] in visited):
 #         print(e)
-from collections import deque, namedtuple
-Edge = namedtuple('Edge', 'start, end, cost')
-e = Edge('a', 'b', 1)
-e.cost = 10
+import importlib
+
+
+
+
+my_module = importlib.import_module("avai_cluster_placement.ultilities")
+my_module = importlib.import_module("avai_cluster_placement.ultilities")
+
+instance = getattr(my_module, "Test")()
+instance.print_()

@@ -5,7 +5,7 @@ from .Dijktra import Graph
 from random import choice
 
 
-class Bandwidth_Greedy(Algorithm):
+class BWGreedy(Algorithm):
     def run(self):
         CA = self.topo['CA']
         DC = self.topo['DC']
@@ -54,7 +54,8 @@ class Bandwidth_Greedy(Algorithm):
                         CA[d] -= RC[vir_node]
                         placeable = True
                         vir_nodes.remove(vir_node)
-                        visited_nodes.append(d)
+                        if len(visited_nodes) <= 3:
+                            visited_nodes.append(d)
                         break
                 if not placeable:
                     print("unfeasible model")

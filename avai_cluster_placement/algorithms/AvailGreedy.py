@@ -47,7 +47,8 @@ class AvailGreedy(Algorithm):
                         CA[d] -= RC[vir_node]
                         placeable = True
                         vir_nodes.remove(vir_node)
-                        visited_nodes.append(d)
+                        if len(visited_nodes) <= 3:
+                            visited_nodes.append(d)
                         break
                 if not placeable:
                     print("unfeasible model")

@@ -43,5 +43,5 @@ def evaluate(result, request, topology):
         request_avai[r] = 1 - temp
     average_req_avai = sum(request_avai[r] for r in CR)/len(CR)
 
-    return {'total_bw': total_bw, 'average_avai': average_req_avai}
+    return {'total_bw': total_bw, 'aver_avai': average_req_avai}
 
