@@ -2,10 +2,10 @@ from avai_cluster_placement.requests.request import request_generator
 from avai_cluster_placement.topos.initilize_topo import initialize_topo
 from avai_cluster_placement.evaluation import evaluate
 from copy import deepcopy
-from avai_cluster_placement.ultilities import save_to_file, load_topo
+from avai_cluster_placement.utilities import save_to_file, load_topo
 from avai_cluster_placement.constants import *
 import importlib
-from avai_cluster_placement.ultilities import *
+from avai_cluster_placement.utilities import *
 
 
 if __name__ == "__main__":
