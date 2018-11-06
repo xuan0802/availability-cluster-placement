@@ -161,8 +161,6 @@ class TARE(Algorithm):
                     # do random placement for unplaced requests
                     self.random_placement(r, RC, RB)
 
-
-
             else:
                 if topo_type == 'mesh':
                     # determine node number

@@ -23,10 +23,10 @@ class BWGreedy(Algorithm):
 
         # ================== node mapping algorithm =========================================
         # sort requests according to number of virtual nodes
-        req_num = {}
+        req_size = {}
         for r in CR:
-            req_num[r] = len(ACT[r]) + len(STB[r])
-        CR.sort(key=lambda x: req_num[x], reverse=True)
+            req_size[r] = len(ACT[r]) + len(STB[r])
+        CR.sort(key=lambda x: req_size[x], reverse=True)
 
         # for each request, try to place each virtual node on node having highest bandwidth on all links
         for r in CR:
@@ -54,7 +54,7 @@ class BWGreedy(Algorithm):
                         CA[d] -= RC[vir_node]
                         placeable = True
                         vir_nodes.remove(vir_node)
-                        if len(visited_nodes) <= 3:
+                        if len(visited_nodes) <= 1:
                             visited_nodes.append(d)
                         break
                 if not placeable:

@@ -1,7 +1,7 @@
 from random import *
 import pandas as pd
 
-N_DC = 24
+N_DC = 40
 
 
 def initialize_topo():
@@ -16,7 +16,7 @@ def initialize_topo():
     for i in range(N_DC):
         DC.append('dc' + str(i + 1))
     # a set of link between two cloud centers
-    df = pd.read_csv("topos/USAnet.csv", delimiter=",")
+    df = pd.read_csv("topos/GEANTnet.csv", delimiter=",")
     for v in df.values:
         EG.append(tuple('dc' + str(x) for x in v))
 
