@@ -103,6 +103,20 @@ class Algorithm:
                                     virtual_links_req.append((a, a_))
         return virtual_links_req
 
+    # obtain virtual links of one standby
+    def get_virtual_links_one_stb(self, req, stb):
+        ACT = self.req['ACT']
+
+        virtual_links_stb = []
+        if req[0:4] == 'reqA':
+            for a in ACT[req]:
+                    virtual_links_stb.append((a, stb))
+        else:
+            if req[0:4] == 'reqB':
+                for a in ACT[req]:
+                        virtual_links_stb.append((stb, a))
+        return virtual_links_stb
+
     # print placement results
     def print_results(self):
         print(self.X)

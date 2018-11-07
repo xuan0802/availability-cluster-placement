@@ -9,12 +9,12 @@ from avai_cluster_placement.utilities import *
 
 
 if __name__ == "__main__":
-    # """run all algorithms and make plots"""
-    topo_ = initialize_topo()
-    # save topo in a file
-    save_to_file(topo_, "topo_json/topo2.json")
+    # # """run all algorithms and make plots"""
+    # topo_ = initialize_topo()
+    # # save topo in a file
+    # save_to_file(topo_, "topo_json/topo_geant.json")
     # load topo from a file
-    topo = load_topo("topo_json/topo2.json")
+    topo = load_topo("topo_json/topo_usa.json")
 
     # generate different requests
     requests = []
