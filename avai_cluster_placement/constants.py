@@ -21,3 +21,5 @@ LABEL_MARKER_MAP = {
     "AVGR": "^",
     "TARE": "D"
 }
+
+H = 3

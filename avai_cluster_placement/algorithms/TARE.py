@@ -2,7 +2,6 @@ from .Algorithms import Algorithm
 from copy import deepcopy
 import itertools
 from .ShortestTree import ShortestTree
-from .Dijktra import Graph
 
 class TARE(Algorithm):
     def run(self):

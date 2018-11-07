@@ -1,9 +1,5 @@
 from .Algorithms import Algorithm
-from copy import deepcopy
-import itertools
-from .Dijktra import Graph
-import random
-
+from avai_cluster_placement.constants import *
 
 class AvailGreedy(Algorithm):
     def run(self):
@@ -47,7 +43,7 @@ class AvailGreedy(Algorithm):
                         CA[d] -= RC[vir_node]
                         placeable = True
                         vir_nodes.remove(vir_node)
-                        if len(visited_nodes) <= 3:
+                        if len(visited_nodes) <= H:
                             visited_nodes.append(d)
                         break
                 if not placeable:
