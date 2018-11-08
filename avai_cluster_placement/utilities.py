@@ -13,7 +13,6 @@ def save_to_file(input_dict, filename):
 
 def load_topo(filename):
     # load topo from a file
-    DC = []
     EG = []
     BW = {}
     CA = {}
@@ -45,6 +44,13 @@ def load_topo(filename):
     input['BW'] = BW
 
     return input
+
+
+def load_req(filename):
+    f = open(filename)
+    requests = ujson.load(f)
+    f.close()
+    return requests
 
 
 def draw_line_chart(req_num_list, fig_title, *algorithm_results):

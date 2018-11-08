@@ -1,6 +1,6 @@
 from copy import copy, deepcopy
 from .Dijktra import Graph
-
+from avai_cluster_placement.constants import *
 
 class Algorithm:
     def __init__(self, topo, req):
@@ -9,6 +9,7 @@ class Algorithm:
         self.X = {}
         self.U = {}
 
+    # calculate resource demand for requests
     def calResourceDemand(self):
         CR = self.req['CR']
         ACT = self.req['ACT']
@@ -42,6 +43,49 @@ class Algorithm:
                                 if (a != a_) and ((a, a_) not in RB) and ((a_, a) not in RB):
                                     RB[a, a_] = 2 * RB_u[r]
         return {'RB': RB, 'RC': RC}
+
+    # calculate availability of a request
+    def calculateAvai(self, r, placement, routing):
+        ACT = self.req['ACT']
+        STB = self.req['STB']
+        DC = self.topo['DC']
+        AvL = self.topo['AvL']
+        AvN = self.topo['AvN']
+
+        vir_nodes = ACT[r] + STB[r]
+        function_avai = {}
+        for d in DC:
+            # temp used to store unavailability of all vir nodes
+            temp = 1
+            for v in vir_nodes:
+                if placement[v] == d:
+                    # if vir node is active
+                    if v in ACT[r]:
+                        temp *= (1 - Av_soft)
+                    else:
+                        # if vir node is standby, need to add link availability
+                        if v in STB[r]:
+                            # get all vir links to standby
+                            vir_links_stb = self.get_virtual_links_one_stb(r, v)
+                            # temp used to store unavailability of all links to standby
+                            temp_ = 1
+                            for vir_link in vir_links_stb:
+                                # calculate availability for each vir link
+                                Av_vir_link = 1
+                                for e in routing[vir_link]:
+                                    Av_vir_link *= AvL[e]
+                                temp_ *= (1 - Av_vir_link)
+                            # Availability of all virtual links to standby
+                            Av_link_stb = 1 - temp_
+
+                            temp *= (1 - Av_soft * Av_link_stb)
+            # availability of all vir nodes
+            function_avai[d] = 1 - temp
+        temp = 1
+        for d in DC:
+            # add availability of physical node
+            temp *= 1 - AvN[d] * function_avai[d]
+        return 1 - temp
 
     # output: list of neighbors of a node
     def get_neighbors(self, edges, datacenters):
@@ -134,18 +178,19 @@ class Algorithm:
         return edge_path
 
     # find shortest path between two nodes
-    def shortest_path_link_map(self, vir_links, RB):
+    def shortest_path_link_map(self, placement, vir_links, RB):
         EG = self.topo['EG']
         BW = self.topo['BW']
 
+        routing_results = dict()
         # map virtual link to physical link
         for vir_link in vir_links:
             link_mappable = True
             # get the physical nodes
-            phy_node_0 = self.X[vir_link[0]]
-            phy_node_1 = self.X[vir_link[1]]
+            phy_node_0 = placement[vir_link[0]]
+            phy_node_1 = placement[vir_link[1]]
             if phy_node_0 == phy_node_1:
-                self.U[vir_link] = []
+                routing_results[vir_link] = []
                 continue
 
             # remove all physical links not enough bandwidth
@@ -160,7 +205,7 @@ class Algorithm:
             path = graph.dijkstra(phy_node_0, phy_node_1)
 
             # update results and decrease bandwidth resources
-            self.U[vir_link] = []
+            routing_results[vir_link] = []
             # get path in terms of edges, not vertices
             edge_path = self.get_path_edges(path)
             # if path consists of physical links out of bandwidth, then unable to map
@@ -170,10 +215,9 @@ class Algorithm:
                     print(out_of_bw_phy_links)
 
             if link_mappable:
-                # update routing results, and decrease resources
                 for e in edge_path:
-                    self.U[vir_link].append(e)
-                    BW[e] -= RB[vir_link]
+                    routing_results[vir_link].append(e)
             else:
                 print("can not map link")
+        return routing_results
 

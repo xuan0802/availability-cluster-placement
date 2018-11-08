@@ -22,4 +22,5 @@ LABEL_MARKER_MAP = {
     "TARE": "D"
 }
 
-H = 3
+Av_min = 0.95
+Av_soft = 0.9

@@ -1,5 +1,7 @@
 from .Algorithms import Algorithm
 from avai_cluster_placement.constants import *
+from copy import deepcopy
+
 
 class AvailGreedy(Algorithm):
     def run(self):
@@ -19,41 +21,60 @@ class AvailGreedy(Algorithm):
 
         # ================== node mapping algorithm =========================================
         # sort requests according to number of virtual nodes
-        req_num = {}
+        req_size = {}
         for r in CR:
-            req_num[r] = len(ACT[r]) + len(STB[r])
-        CR.sort(key=lambda x: req_num[x], reverse=True)
+            req_size[r] = len(ACT[r]) + len(STB[r])
+        CR.sort(key=lambda x: req_size[x], reverse=True)
 
         # for each request, try to place each virtual node on node with highest availability and enough resources first
         for r in CR:
-            vir_nodes = ACT[r] + STB[r]
             # sort nodes according availability
             DC.sort(key=lambda x: AvN[x], reverse=True)
-            # place virtual node on physical node
-            visited_nodes = list()
-            while vir_nodes:
-                placeable = False
-                # get one virtual node
-                vir_node = vir_nodes[0]
-                # check computing resources enough or not
-                for d in DC:
-                    if CA[d] >= RC[vir_node] and (d not in visited_nodes):
-                        self.X[vir_node] = d
-                        # decrease resources
-                        CA[d] -= RC[vir_node]
-                        placeable = True
-                        vir_nodes.remove(vir_node)
-                        if len(visited_nodes) <= H:
-                            visited_nodes.append(d)
-                        break
-                if not placeable:
-                    print("unfeasible model")
+            # place virtual nodes on physical nodes
+            H = 2
+            while H <= len(ACT[r] + STB[r]):
+                vir_nodes = ACT[r] + STB[r]
+                visited_nodes = list()
+                req_place_result = dict()
+                req_routing_result = dict()
+                while vir_nodes:
+                    req_placed = False
+                    # get one virtual node
+                    vir_node = vir_nodes[0]
+                    # check computing resources enough or not
+                    for d in DC:
+                        if CA[d] >= RC[vir_node] and (d not in visited_nodes):
+                            req_place_result[vir_node] = d
+                            vir_nodes.remove(vir_node)
+                            if len(visited_nodes) <= H:
+                                visited_nodes.append(d)
+                            break
+                    if not vir_nodes:
+                        req_placed = True
 
-        # =========================== link mapping algorithm ================================
-        # obtain all virtual links
-        virtual_links = self.get_virtual_links()
-        # map virtual link to physical link
-        self.shortest_path_link_map(virtual_links, RB)
+                if not req_placed:
+                    print("Can not place request")
+                    print(r)
+                else:
+                    # map virtual links on physical links
+                    virtual_links = self.get_virtual_links_one_req(r)
+                    req_routing_result = self.shortest_path_link_map(req_place_result, virtual_links, RB)
+
+                # check availability of placement for one request
+                Av_r = self.calculateAvai(r, req_place_result, req_routing_result)
+                if Av_r >= Av_min and req_placed:
+                    # do real placement and routing, decrease real resources
+                    for vir_node in req_place_result.keys():
+                        self.X[vir_node] = req_place_result[vir_node]
+                        CA[req_place_result[vir_node]] -= RC[vir_node]
+                    for vir_link in req_routing_result.keys():
+                        self.U[vir_link] = deepcopy(req_routing_result[vir_link])
+                        for e in req_routing_result[vir_link]:
+                            BW[e] -= RB[vir_link]
+                    break
+                else:
+                    # increase level of distribution by changing H
+                    H += 1
 
 
 

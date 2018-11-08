@@ -2,6 +2,8 @@ from .Algorithms import Algorithm
 from copy import deepcopy
 import itertools
 from .ShortestTree import ShortestTree
+from avai_cluster_placement.constants import *
+
 
 class TARE(Algorithm):
     def run(self):
@@ -146,8 +148,8 @@ class TARE(Algorithm):
                             break
                         else:
                             continue
-
-                if req_placed:
+                Av_r = self.calculateAvai(r, req_place_result, req_routing_result)
+                if Av_r >= Av_min and req_placed:
                     # do real placement, decrease real resources
                     for vir_node in req_place_result.keys():
                         self.X[vir_node] = req_place_result[vir_node]
@@ -158,7 +160,7 @@ class TARE(Algorithm):
                             BW[e] -= RB[vir_link]
                 else:
                     # do random placement for unplaced requests
-                    self.random_placement(r, RC, RB)
+                    self.place_one_req_avail_greedy(r, RC, RB)
 
             else:
                 if topo_type == 'mesh':
@@ -187,22 +189,36 @@ class TARE(Algorithm):
 
                     # sort according to usable link number
                     combination_list.sort(key=lambda x: usable_link_num[x], reverse=True)
-                    if combination_list:
-                        selected_comb = combination_list[0]
+                    for comb in combination_list:
+                        selected_comb = comb
+                        # req_place_result, req_routing_result used to store temporarily placement for one results
+                        req_place_result = dict()
+                        req_routing_result = dict()
                         for i in range(len(selected_comb)):
-                            self.X[peer_nodes[i]] = selected_comb[i]
-                            CA[selected_comb[i]] = CA[selected_comb[i]] - RC[peer_nodes[0]]
-                        req_placed = True
+                            req_place_result[peer_nodes[i]] = selected_comb[i]
 
-                    if req_placed:
                         # get virtual links
                         vir_links = self.get_virtual_links_one_req(r)
                         # do link mapping
-                        self.shortest_path_link_map(vir_links, RB)
-                    else:
-                        self.random_placement(r, RC, RB)
+                        req_routing_result = self.shortest_path_link_map(req_place_result, vir_links, RB)
+                        # check availability of placement for one request
+                        Av_r = self.calculateAvai(r, req_place_result, req_routing_result)
+                        if Av_r >= Av_min:
+                            # do real placement and routing, decrease real resources
+                            for vir_node in req_place_result.keys():
+                                self.X[vir_node] = req_place_result[vir_node]
+                                CA[req_place_result[vir_node]] -= RC[vir_node]
+                            for vir_link in req_routing_result.keys():
+                                self.U[vir_link] = deepcopy(req_routing_result[vir_link])
+                                for e in req_routing_result[vir_link]:
+                                    BW[e] -= RB[vir_link]
+                            req_placed = True
+                            break
 
-    def random_placement(self, req, RC, RB):
+                    if not req_placed:
+                        self.place_one_req_avail_greedy(r, RC, RB)
+
+    def place_one_req_avail_greedy(self, r, RC, RB):
         CA = self.topo['CA']
         DC = self.topo['DC']
         EG = self.topo['EG']
@@ -212,24 +228,50 @@ class TARE(Algorithm):
         ACT = self.req['ACT']
         STB = self.req['STB']
 
-        # =========================== random node placement algorithm ================================
-        vir_nodes = ACT[req] + STB[req]
-        vir_links = self.get_virtual_links_one_req(req)
-
-        while vir_nodes:
-            req_placed = False
-            # get one virtual node
-            vir_node = vir_nodes[0]
-            # check computing resources enough or not
-            for d in DC:
-                if CA[d] >= RC[vir_node]:
-                    self.X[vir_node] = d
-                    # decrease resources
-                    CA[d] -= RC[vir_node]
+        # sort nodes according availability
+        DC.sort(key=lambda x: AvN[x], reverse=True)
+        # place virtual nodes on physical nodes
+        H = 2
+        while H <= len(ACT[r] + STB[r]):
+            vir_nodes = ACT[r] + STB[r]
+            visited_nodes = list()
+            req_place_result = dict()
+            req_routing_result = dict()
+            while vir_nodes:
+                req_placed = False
+                # get one virtual node
+                vir_node = vir_nodes[0]
+                # check computing resources enough or not
+                for d in DC:
+                    if CA[d] >= RC[vir_node] and (d not in visited_nodes):
+                        req_place_result[vir_node] = d
+                        vir_nodes.remove(vir_node)
+                        if len(visited_nodes) <= H:
+                            visited_nodes.append(d)
+                        break
+                if not vir_nodes:
                     req_placed = True
-                    break
-            if not req_placed:
-                print("can not place")
 
-        # =========================== shortest path link mapping algorithm ================================
-        self.shortest_path_link_map(vir_links, RB)
+            if not req_placed:
+                print("Can not place request")
+                print(r)
+            else:
+                # map virtual links on physical links
+                virtual_links = self.get_virtual_links_one_req(r)
+                req_routing_result = self.shortest_path_link_map(req_place_result, virtual_links, RB)
+
+            # check availability of placement for one request
+            Av_r = self.calculateAvai(r, req_place_result, req_routing_result)
+            if Av_r >= Av_min and req_placed:
+                # do real placement and routing, decrease real resources
+                for vir_node in req_place_result.keys():
+                    self.X[vir_node] = req_place_result[vir_node]
+                    CA[req_place_result[vir_node]] -= RC[vir_node]
+                for vir_link in req_routing_result.keys():
+                    self.U[vir_link] = deepcopy(req_routing_result[vir_link])
+                    for e in req_routing_result[vir_link]:
+                        BW[e] -= RB[vir_link]
+                break
+            else:
+                # increase level of distribution by changing H
+                H += 1
