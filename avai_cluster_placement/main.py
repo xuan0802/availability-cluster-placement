@@ -10,21 +10,20 @@ from avai_cluster_placement.utilities import *
 
 if __name__ == "__main__":
     # """run all algorithms and make plots"""
-    # topo_ = initialize_topo()
-    # # save topo in a file
-    # save_to_file(topo_, "topo_json/topo_.json")
+    topo_ = initialize_topo()
+    # save topo in a file
+    save_to_file(topo_, "topo_json/topo_.json")
     # load topo from a file
     topo = load_topo("topo_json/topo_.json")
 
-    # # generate different requests
-    # requests = []
+    # generate different requests
+    requests = []
     req_num_list = [i for i in range(10) if i >= 1]
-    # for i in req_num_list:
-    #     req = request_generator(i, i, i)
-    #     requests.append(req)
-    # # save requests in a file
-    # save_to_file(requests, "req_json/req.json")
-    requests = load_req("req_json/req.json")
+    for i in req_num_list:
+        req = request_generator(i, i, i)
+        requests.append(req)
+    # save requests in a file
+    save_to_file(requests, "req_json/req.json")
 
     # define data structure to store performance results
     bw_gr = dict()
