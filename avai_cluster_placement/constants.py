@@ -7,20 +7,22 @@ FIG_TITLE_DATA_MAP = {
 # mapping title and y limit
 FIG_TITLE_YLIMIT_MAP = {
     'Average availability': (0.99, 1),
-    'Total bandwidth usage (Mbps)': (50, 2000)
+    'Total bandwidth usage (Mbps)': (100, 6000)
 }
 
 LABEL_COLOR_MAP = {
     "BWGR": "blue",
     "AVGR": "red",
-    "TARE": "green"
+    "TARE": "green",
+    "COGR": "purple"
 }
 
 LABEL_MARKER_MAP = {
     "BWGR": "s",
     "AVGR": "^",
-    "TARE": "D"
+    "TARE": "D",
+    "COGR": "o"
 }
 
 Av_min = 0.95
-Av_soft = 0.9
+Av_soft = 0.95

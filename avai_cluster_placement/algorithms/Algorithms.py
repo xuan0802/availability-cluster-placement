@@ -1,4 +1,4 @@
-from copy import copy, deepcopy
+from copy import deepcopy
 from .Dijktra import Graph
 from avai_cluster_placement.constants import *
 
@@ -222,7 +222,7 @@ class Algorithm:
         return routing_results
 
     # place and map one request on physical nodes
-    def place_map_one_request(self, r, RC, RB, greedy_policy):
+    def RP_SP_one_request(self, r, RC, RB, greedy_policy):
         CA = self.topo['CA']
         DC = self.topo['DC']
         EG = self.topo['EG']
@@ -233,7 +233,7 @@ class Algorithm:
         STB = self.req['STB']
 
         if greedy_policy == "bandwidth":
-            # sort nodes according total bandwidth on all associated links
+            # sort nodes by total bandwidth on all associated links
             bw_total = {}
             for d in DC:
                 bw_temp = 0
@@ -244,8 +244,12 @@ class Algorithm:
             DC.sort(key=lambda x: bw_total[x], reverse=True)
         else:
             if greedy_policy == "availability":
-                # sort nodes according availability
+                # sort nodes by availability
                 DC.sort(key=lambda x: AvN[x], reverse=True)
+            else:
+                if greedy_policy == "computing":
+                    # sort nodes by computing resources
+                    DC.sort(key=lambda x: CA[x], reverse=True)
 
         H = 2
         while H <= len(ACT[r] + STB[r]):

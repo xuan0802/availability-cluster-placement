@@ -1,6 +1,4 @@
 from .Algorithms import Algorithm
-from avai_cluster_placement.constants import *
-from copy import deepcopy
 
 
 class AvailGreedy(Algorithm):
@@ -28,7 +26,7 @@ class AvailGreedy(Algorithm):
 
         # for each request, try to place each virtual node on node with highest availability and enough resources first
         for r in CR:
-            self.place_map_one_request(r, RC, RB, "availability")
+            self.RP_SP_one_request(r, RC, RB, "availability")
 
 
 

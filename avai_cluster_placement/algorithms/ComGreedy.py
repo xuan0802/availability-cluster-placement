@@ -1,9 +1,7 @@
 from .Algorithms import Algorithm
-from avai_cluster_placement.constants import *
-from copy import deepcopy
 
 
-class BWGreedy(Algorithm):
+class ComGreedy(Algorithm):
     def run(self):
         CA = self.topo['CA']
         DC = self.topo['DC']
@@ -27,4 +25,4 @@ class BWGreedy(Algorithm):
 
         # for each request, try to place each virtual node on node having highest bandwidth on all links
         for r in CR:
-            self.RP_SP_one_request(r, RC, RB, "bandwidth")
+            self.RP_SP_one_request(r, RC, RB, "computing")

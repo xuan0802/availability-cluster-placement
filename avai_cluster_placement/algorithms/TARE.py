@@ -70,15 +70,15 @@ class TARE(Algorithm):
                     if not neighbors[d]:
                         DC_.remove(d)
 
-                # calculate the rank, rank = number of usable links
+                # Sort according number of usable links
                 neighbors = self.get_neighbors(EG_, DC_)
 
-                phy_node_rank = {}
+                usable_link_num = {}
                 for d in DC_:
-                    phy_node_rank[d] = len(neighbors[d])
+                    usable_link_num[d] = len(neighbors[d])
 
                 # sort nodes according to rank
-                DC_.sort(key=lambda x: phy_node_rank[x], reverse=True)
+                DC_.sort(key=lambda x: usable_link_num[x], reverse=True)
                 # map request to physical node with highest rank first
                 for d in DC_:
                     # place_nodes used to check node already placed
@@ -145,22 +145,25 @@ class TARE(Algorithm):
                             else:
                                 break
                         if req_placed:
-                            break
+                            Av_r = self.calculateAvai(r, req_place_result, req_routing_result)
+                            if Av_r >= Av_min:
+                                # do real placement, decrease real resources
+                                for vir_node in req_place_result.keys():
+                                    self.X[vir_node] = req_place_result[vir_node]
+                                    CA[req_place_result[vir_node]] -= RC[vir_node]
+                                for vir_link in req_routing_result.keys():
+                                    self.U[vir_link] = deepcopy(req_routing_result[vir_link])
+                                    for e in req_routing_result[vir_link]:
+                                        BW[e] -= RB[vir_link]
+                                break
                         else:
                             continue
-                Av_r = self.calculateAvai(r, req_place_result, req_routing_result)
-                if Av_r >= Av_min and req_placed:
-                    # do real placement, decrease real resources
-                    for vir_node in req_place_result.keys():
-                        self.X[vir_node] = req_place_result[vir_node]
-                        CA[req_place_result[vir_node]] -= RC[vir_node]
-                    for vir_link in req_routing_result.keys():
-                        self.U[vir_link] = deepcopy(req_routing_result[vir_link])
-                        for e in req_routing_result[vir_link]:
-                            BW[e] -= RB[vir_link]
+
+                if req_placed:
+                    continue
                 else:
                     # do placement for unplaced requests using avail greedy
-                    self.place_map_one_request(r, RC, RB, "availability")
+                    self.RP_SP_one_request(r, RC, RB, "availability")
 
             else:
                 if topo_type == 'mesh':
@@ -216,4 +219,4 @@ class TARE(Algorithm):
 
                     if not req_placed:
                         # do placement for unplaced requests using avail greedy
-                        self.place_map_one_request(r, RC, RB, "availability")
+                        self.RP_SP_one_request(r, RC, RB, "availability")

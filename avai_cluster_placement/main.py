@@ -29,17 +29,20 @@ if __name__ == "__main__":
     bw_gr = dict()
     av_gr = dict()
     ta_re = dict()
+    co_gr = dict()
     bw_gr['label'] = "BWGR"
     av_gr['label'] = "AVGR"
+    co_gr['label'] = "COGR"
     ta_re['label'] = "TARE"
     for data in FIG_TITLE_DATA_MAP.values():
         bw_gr[data] = list()
         av_gr[data] = list()
         ta_re[data] = list()
+        co_gr[data] = list()
 
     # a list of algorithms
-    algo_name_list = ["TARE", "AvailGreedy", "BWGreedy"]
-    algo_perf_map = {"TARE": ta_re, "AvailGreedy": av_gr, "BWGreedy": bw_gr}
+    algo_name_list = ["TARE", "AvailGreedy", "BWGreedy", "ComGreedy"]
+    algo_perf_map = {"TARE": ta_re, "AvailGreedy": av_gr, "BWGreedy": bw_gr, "ComGreedy": co_gr}
     # run algorithms with different requests
     for algo in algo_name_list:
         print("--------------------" + algo + "--------------------------")
@@ -54,4 +57,4 @@ if __name__ == "__main__":
     # make plots
     fig_title_list = ['Average availability', 'Total bandwidth usage (Mbps)']
     for fig_title in fig_title_list:
-        draw_line_chart(req_num_list, fig_title, bw_gr, av_gr, ta_re)
+        draw_line_chart(req_num_list, fig_title, bw_gr, av_gr, ta_re, co_gr)
