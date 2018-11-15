@@ -6,7 +6,7 @@ FIG_TITLE_DATA_MAP = {
 }
 # mapping title and y limit
 FIG_TITLE_YLIMIT_MAP = {
-    'Average availability': (0.99, 1),
+    'Average availability': (0.995, 1),
     'Total bandwidth usage (Mbps)': (100, 6000)
 }
 

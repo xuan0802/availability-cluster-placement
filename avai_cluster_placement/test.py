@@ -92,10 +92,6 @@
 #     if (e[0] in all_vertices and e [1]) in visited or (e[1] in all_vertices and e [0] in visited):
 #         print(e)
 
-a = [1, 2]
-b = [3, 4]
-c = a + b
-c[0] = 0
-print(c)
-print(a)
-print(b)
+a = {'a':'a', 'c':2, 'b':3}
+print(a.keys())
+print(a.values())

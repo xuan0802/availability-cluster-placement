@@ -2,6 +2,7 @@ import ujson
 from ast import literal_eval
 from avai_cluster_placement.constants import *
 from matplotlib import pyplot as plt
+import numpy as np
 
 
 def save_to_file(input_dict, filename):
@@ -63,4 +64,25 @@ def draw_line_chart(req_num_list, fig_title, *algorithm_results):
     plt.xlabel('Request number', fontsize='x-large')
     plt.ylabel(fig_title, fontsize='x-large')
     plt.legend(fontsize='large')
+    plt.show()
+
+
+def draw_bar_chart(xtick, fig_title, *algorithm_results):
+    """draw a bar chart"""
+    fig, ax = plt.subplots()
+    index = np.arange(len(xtick))
+    bar_width = 0.2
+    opacity = 0.8
+    i = 0
+    for result in algorithm_results:
+        ax.bar(index + i * bar_width, result[FIG_TITLE_DATA_MAP[fig_title]],
+               bar_width, alpha=opacity, color=LABEL_COLOR_MAP[result["label"]], label=result["label"])
+        i = i + 1
+    ax.set_ylim(FIG_TITLE_YLIMIT_MAP[fig_title])
+    ax.set_xlabel('Request Type', fontsize='x-large')
+    ax.set_ylabel(fig_title, fontsize='x-large')
+    ax.set_xticks(index + bar_width)
+    ax.set_xticklabels(xtick)
+    ax.legend(fontsize='large')
+    fig.tight_layout()
     plt.show()

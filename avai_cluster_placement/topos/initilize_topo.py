@@ -2,7 +2,7 @@ from random import *
 import pandas as pd
 
 
-def initialize_topo():
+def initialize_topo(network):
     DC = []
     EG = []
     BW = {}
@@ -11,7 +11,12 @@ def initialize_topo():
     AvL = {}
 
     # a set of link between two cloud centers
-    df = pd.read_csv("topos/USAnet.csv", delimiter=",")
+    if network == "usa":
+        df = pd.read_csv("topos/USAnet.csv", delimiter=",")
+    else:
+        if network == "geant":
+            df = pd.read_csv("topos/GEANTnet.csv", delimiter=",")
+
     for v in df.values:
         EG.append(tuple('dc' + str(x) for x in v))
     # obtain a set of cloud centers from edges
