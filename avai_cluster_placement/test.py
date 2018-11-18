@@ -92,6 +92,5 @@
 #     if (e[0] in all_vertices and e [1]) in visited or (e[1] in all_vertices and e [0] in visited):
 #         print(e)
 
-a = {'a':'a', 'c':2, 'b':3}
-print(a.keys())
-print(a.values())
+req_nums = [2*i for i in range(10) if i != 0]
+print(req_nums)

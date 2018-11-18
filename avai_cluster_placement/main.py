@@ -6,15 +6,25 @@ from avai_cluster_placement.utilities import save_to_file, load_topo
 from avai_cluster_placement.constants import *
 import importlib
 from avai_cluster_placement.utilities import *
+from statistics import mean
 
 
 def vary_request_number():
     # generate different requests
-    requests = []
+    requests = {}
     req_num_list = [i for i in range(10) if i >= 1]
-    for i in req_num_list:
-        req = request_generator(i, i, i)
-        requests.append(req)
+    req_name_list = list()
+    for req_num in req_num_list:
+        req_name_list.append("req_num" + str(req_num))
+
+    for req_name in req_name_list:
+        requests[req_name] = list()
+
+    for req_num in req_num_list:
+        for i in range(5):
+            req = request_generator(req_num, req_num, req_num)
+            requests["req_num" + str(req_num)].append(req)
+
     # save requests in a file
     save_to_file(requests, "req_json/req.json")
 
@@ -40,12 +50,21 @@ def vary_request_number():
     for algo in algo_name_list:
         print("--------------------" + algo + "--------------------------")
         module = importlib.import_module("avai_cluster_placement.algorithms." + algo)
-        for req in requests:
-            algo_instance = getattr(module, algo)(deepcopy(topo), deepcopy(req))
-            algo_instance.run()
-            perf = evaluate(algo_instance.get_results(), deepcopy(req), deepcopy(topo))
-            algo_perf_map[algo]["aver_avail"].append(perf["aver_avai"])
-            algo_perf_map[algo]["total_bw"].append(perf["total_bw"])
+        for req_name in req_name_list:
+            aver_avail_list = list()
+            total_bw = list()
+            i = 0
+            for req in requests[req_name]:
+                i += 1
+                print(i)
+                algo_instance = getattr(module, algo)(deepcopy(topo), deepcopy(req))
+                algo_instance.run()
+                perf = evaluate(algo_instance.get_results(), deepcopy(req), deepcopy(topo))
+                aver_avail_list.append(perf["aver_avai"])
+                total_bw.append(perf["total_bw"])
+
+            algo_perf_map[algo]["aver_avail"].append(mean(aver_avail_list))
+            algo_perf_map[algo]["total_bw"].append(mean(total_bw))
 
     # make plots
     fig_title_list = ['Average availability', 'Total bandwidth usage (Mbps)']
@@ -54,16 +73,20 @@ def vary_request_number():
 
 
 def vary_request_type():
-    # generate requests
-    requests = []
-    request_num = 20
-    # create each type of request
-    req = request_generator(request_num, 0, 0)
-    requests.append(req)
-    req = request_generator(request_num, 0, 0)
-    requests.append(req)
-    req = request_generator(0, 0, request_num)
-    requests.append(req)
+    # generate 10 requests for each type
+    req_types = ["oAmS", "mAoS", "mA"]
+    requests = {}
+    for req_type in req_types:
+        requests[req_type] = list()
+
+    req_nums = [2*i for i in range(12) if i > 10]
+    for req_num in req_nums:
+        req = request_generator(req_num, 0, 0)
+        requests["oAmS"].append(req)
+        req = request_generator(0, req_num, 0)
+        requests["mAoS"].append(req)
+        req = request_generator(0, 0, req_num)
+        requests["mA"].append(req)
 
     # define data structure to store performance results
     bw_gr = dict()
@@ -87,12 +110,21 @@ def vary_request_type():
     for algo in algo_name_list:
         print("--------------------" + algo + "--------------------------")
         module = importlib.import_module("avai_cluster_placement.algorithms." + algo)
-        for req in requests:
-            algo_instance = getattr(module, algo)(deepcopy(topo), deepcopy(req))
-            algo_instance.run()
-            perf = evaluate(algo_instance.get_results(), deepcopy(req), deepcopy(topo))
-            algo_perf_map[algo]["aver_avail"].append(perf["aver_avai"])
-            algo_perf_map[algo]["total_bw"].append(perf["total_bw"])
+        for req_type in req_types:
+            aver_avail_list = list()
+            total_bw = list()
+            i = 0
+            for req in requests[req_type]:
+                i += 1
+                print(i)
+                algo_instance = getattr(module, algo)(deepcopy(topo), deepcopy(req))
+                algo_instance.run()
+                perf = evaluate(algo_instance.get_results(), deepcopy(req), deepcopy(topo))
+                aver_avail_list.append(perf["aver_avai"])
+                total_bw.append(perf["total_bw"])
+            print(req_type)
+            algo_perf_map[algo]["aver_avail"].append(mean(aver_avail_list))
+            algo_perf_map[algo]["total_bw"].append(mean(total_bw))
 
     # create plots
     # create list of ticks on x axis
@@ -105,11 +137,11 @@ def vary_request_type():
 
 if __name__ == "__main__":
     # # """run all algorithms and make plots"""
-    network = "usa"
-    # topo_ = initialize_topo(network)
-    # # save topo in a file
-    # save_to_file(topo_, "topo_json/topo_" + network + ".json")
-    # # load topo from a file
+    network = "geant"
+    topo_ = initialize_topo(network)
+    # save topo in a file
+    save_to_file(topo_, "topo_json/topo_" + network + ".json")
+    # load topo from a file
     topo = load_topo("topo_json/topo_" + network + ".json")
     vary_request_type()
     # vary_request_number()
