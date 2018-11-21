@@ -6,7 +6,7 @@ from avai_cluster_placement.utilities import save_to_file, load_topo
 from avai_cluster_placement.constants import *
 import importlib
 from avai_cluster_placement.utilities import *
-from statistics import mean
+
 
 
 def vary_request_number():
@@ -21,7 +21,7 @@ def vary_request_number():
         requests[req_name] = list()
 
     for req_num in req_num_list:
-        for i in range(5):
+        for i in range(10):
             req = request_generator(req_num, req_num, req_num)
             requests["req_num" + str(req_num)].append(req)
 
@@ -38,10 +38,10 @@ def vary_request_number():
     co_gr['label'] = "COGR"
     ta_re['label'] = "TARE"
     for data in FIG_TITLE_DATA_MAP.values():
-        bw_gr[data] = list()
-        av_gr[data] = list()
-        ta_re[data] = list()
-        co_gr[data] = list()
+        bw_gr[data] = dict()
+        av_gr[data] = dict()
+        ta_re[data] = dict()
+        co_gr[data] = dict()
 
     # a list of algorithms
     algo_name_list = ["TARE", "AvailGreedy", "BWGreedy", "ComGreedy"]
@@ -52,7 +52,7 @@ def vary_request_number():
         module = importlib.import_module("avai_cluster_placement.algorithms." + algo)
         for req_name in req_name_list:
             aver_avail_list = list()
-            total_bw = list()
+            total_bw_list = list()
             i = 0
             for req in requests[req_name]:
                 i += 1
@@ -61,10 +61,10 @@ def vary_request_number():
                 algo_instance.run()
                 perf = evaluate(algo_instance.get_results(), deepcopy(req), deepcopy(topo))
                 aver_avail_list.append(perf["aver_avai"])
-                total_bw.append(perf["total_bw"])
+                total_bw_list.append(perf["total_bw"])
 
-            algo_perf_map[algo]["aver_avail"].append(mean(aver_avail_list))
-            algo_perf_map[algo]["total_bw"].append(mean(total_bw))
+            algo_perf_map[algo]["aver_avail"][req_name] = aver_avail_list
+            algo_perf_map[algo]["total_bw"][req_name] = total_bw_list
 
     # make plots
     fig_title_list = ['Average availability', 'Total bandwidth usage (Mbps)']
@@ -98,10 +98,10 @@ def vary_request_type():
     co_gr['label'] = "COGR"
     ta_re['label'] = "TARE"
     for data in FIG_TITLE_DATA_MAP.values():
-        bw_gr[data] = list()
-        av_gr[data] = list()
-        ta_re[data] = list()
-        co_gr[data] = list()
+        bw_gr[data] = dict()
+        av_gr[data] = dict()
+        ta_re[data] = dict()
+        co_gr[data] = dict()
 
     # a list of algorithms
     algo_name_list = ["TARE", "AvailGreedy", "BWGreedy", "ComGreedy"]
@@ -112,7 +112,7 @@ def vary_request_type():
         module = importlib.import_module("avai_cluster_placement.algorithms." + algo)
         for req_type in req_types:
             aver_avail_list = list()
-            total_bw = list()
+            total_bw_list = list()
             i = 0
             for req in requests[req_type]:
                 i += 1
@@ -121,10 +121,11 @@ def vary_request_type():
                 algo_instance.run()
                 perf = evaluate(algo_instance.get_results(), deepcopy(req), deepcopy(topo))
                 aver_avail_list.append(perf["aver_avai"])
-                total_bw.append(perf["total_bw"])
+                total_bw_list.append(perf["total_bw"])
             print(req_type)
-            algo_perf_map[algo]["aver_avail"].append(mean(aver_avail_list))
-            algo_perf_map[algo]["total_bw"].append(mean(total_bw))
+
+            algo_perf_map[algo]["aver_avail"][req_type] = aver_avail_list
+            algo_perf_map[algo]["total_bw"][req_type] = total_bw_list
 
     # create plots
     # create list of ticks on x axis
@@ -143,6 +144,6 @@ if __name__ == "__main__":
     save_to_file(topo_, "topo_json/topo_" + network + ".json")
     # load topo from a file
     topo = load_topo("topo_json/topo_" + network + ".json")
-    vary_request_type()
-    # vary_request_number()
+    # vary_request_type()
+    vary_request_number()
 

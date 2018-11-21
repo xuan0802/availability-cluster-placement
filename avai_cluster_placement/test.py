@@ -91,6 +91,10 @@
 # for e in ed:
 #     if (e[0] in all_vertices and e [1]) in visited or (e[1] in all_vertices and e [0] in visited):
 #         print(e)
-
-req_nums = [2*i for i in range(10) if i != 0]
-print(req_nums)
+from statistics import pstdev
+import matplotlib.pyplot as plt
+x = [1, 2, 3, 4]
+y = [1, 4, 9, 16]
+e = [0.5, 1., 1.5, 2.]
+plt.bar(x, y, yerr=e)
+plt.show()

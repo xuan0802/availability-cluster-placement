@@ -232,6 +232,8 @@ class Algorithm:
         ACT = self.req['ACT']
         STB = self.req['STB']
 
+        greedy_values = None
+
         if greedy_policy == "bandwidth":
             # sort nodes by total bandwidth on all associated links
             bw_total = {}
@@ -241,15 +243,15 @@ class Algorithm:
                     if d in e:
                         bw_temp += BW[e]
                 bw_total[d] = bw_temp
-            DC.sort(key=lambda x: bw_total[x], reverse=True)
+            greedy_values = bw_total
         else:
             if greedy_policy == "availability":
-                # sort nodes by availability
-                DC.sort(key=lambda x: AvN[x], reverse=True)
+                greedy_values = AvN
             else:
                 if greedy_policy == "computing":
                     # sort nodes by computing resources
                     DC.sort(key=lambda x: CA[x], reverse=True)
+                    greedy_values = CA
 
         H = 2
         while H <= len(ACT[r] + STB[r]):
@@ -261,6 +263,8 @@ class Algorithm:
                 req_placed = False
                 # get one virtual node
                 vir_node = vir_nodes[0]
+                # sort cloud center according to greedy policy
+                DC.sort(key=lambda x: greedy_values[x], reverse=True)
                 # check computing resources enough or not
                 for d in DC:
                     if CA[d] >= RC[vir_node] and (d not in visited_nodes):
