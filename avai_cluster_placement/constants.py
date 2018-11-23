@@ -24,5 +24,7 @@ LABEL_MARKER_MAP = {
     "COGR": "o"
 }
 
+ALGO_NAME_LIST = ["TARE", "AvailGreedy", "BWGreedy", "ComGreedy"]
+
 Av_min = 0.95
 Av_soft = 0.95
