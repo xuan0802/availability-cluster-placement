@@ -51,6 +51,7 @@ class ShortestTree:
                 neighbors = self.get_neighbors(node.name)
                 for n in neighbors:
                     if n not in visited_vertices:
+
                         child_node = Node(n, self.AvN[n], 'node')
                         node.add_child(child_node)
                         child_node.add_parent(node)

@@ -4,7 +4,7 @@ from copy import deepcopy
 import importlib
 from avai_cluster_placement.simulation_scenarios.scenarios import *
 from avai_cluster_placement.visualization.visualization import *
-from avai_cluster_placement.utilities import save_to_file
+from avai_cluster_placement.utilities import *
 
 
 def run_and_evaluate_algorithms(req_name_list, requests):
@@ -33,6 +33,7 @@ def run_and_evaluate_algorithms(req_name_list, requests):
             aver_avail_list = list()
             total_bw_list = list()
             i = 0
+            print(req_name)
             for req in requests[req_name]:
                 i += 1
                 print(i)
@@ -49,22 +50,26 @@ def run_and_evaluate_algorithms(req_name_list, requests):
 
 
 if __name__ == "__main__":
-    # # create a physical topology
-    # network = "geant"
-    # # topo = initialize_topo(network)
-    # # # save topo in a file
-    # # save_to_file(topo, "topo_json/topo_" + network + ".json")
-    # # # load topo from a file
-    # topo = load_topo("topo_json/topo_" + network + ".json")
+    # create a physical topology
+    network = "geant"
+    topo = initialize_topo(network)
+    # save topo in a file
+    save_to_file(topo, "topo_json/topo_" + network + ".json")
+    # load topo from a file
+    topo = load_topo("topo_json/topo_" + network + ".json")
 
-    # # create request scenario
-    # scenario_req = vary_request_number()
-    scenario_name = "vary_num"
+    # create request scenario
+    scenario_name = "vary_type"
+    if scenario_name == "vary_num":
+        scenario_req = vary_request_number(100)
+    else:
+        if scenario_name == "vary_type":
+            scenario_req = vary_request_type(100)
 
-    # # run algorithms and evaluate
-    # algo_perf_map = run_and_evaluate_algorithms(scenario_req["req_list"], scenario_req["requests"])
-    # save_to_file(algo_perf_map, "results_json/results_" + network + "_" + "scenario_name" + ".json")
-    algo_perf_map = load_perf_results("results_json/results_geant_scenario_vary_num.json")
+    # run algorithms and evaluate
+    algo_perf_map = run_and_evaluate_algorithms(scenario_req["req_list"], scenario_req["requests"])
+    save_to_file(algo_perf_map, "results_json/results_" + network + "_" + scenario_name + ".json")
+    # algo_perf_map = load_perf_results("results_json/results_" + network + "_" + scenario_name + ".json")
 
     # visualize results
     draw_scenarios(scenario_name, algo_perf_map)

@@ -91,15 +91,18 @@
 # for e in ed:
 #     if (e[0] in all_vertices and e [1]) in visited or (e[1] in all_vertices and e [0] in visited):
 #         print(e)
-from statistics import pstdev
+
+
+
 # import matplotlib.pyplot as plt
 # x = [1, 2, 3, 4]
 # y = [1, 4, 9, 16]
 # e = [0.5, 1., 1.5, 2.]
 # plt.bar(x, y, yerr=e, capsize=4 )
 # plt.show()
-d = {1: {1:2}, 3:4}
-def x(*a):
-    for i in a:
-        print(i)
-x(*d.values())
+
+import numpy as np
+
+mylist = [13,23,14,52,6,23]
+
+print(list(np.random.choice(mylist, 2)))

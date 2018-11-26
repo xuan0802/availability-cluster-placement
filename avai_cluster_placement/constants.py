@@ -6,8 +6,8 @@ FIG_TITLE_DATA_MAP = {
 }
 # mapping title and y limit
 FIG_TITLE_YLIMIT_MAP = {
-    'Average availability': (0.994, 1),
-    'Total bandwidth usage (Mbps)': (100, 8000)
+    'Average availability': (0.995, 1),
+    'Total bandwidth usage (Mbps)': (100, 6000)
 }
 
 LABEL_COLOR_MAP = {
@@ -18,10 +18,10 @@ LABEL_COLOR_MAP = {
 }
 
 LABEL_MARKER_MAP = {
-    "BWGR": "o",
-    "AVGR": "o",
-    "TARE": "o",
-    "COGR": "o"
+    "BWGR": "^",
+    "AVGR": "x",
+    "TARE": "+",
+    "COGR": "*"
 }
 
 ALGO_NAME_LIST = ["TARE", "AvailGreedy", "BWGreedy", "ComGreedy"]
